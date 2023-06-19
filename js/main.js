@@ -2,6 +2,7 @@ window.onload = () => {
     let chatInput = document.getElementById("chat-input");
     let sendButton = document.getElementById("send-button");
     let mainContainerBody = document.getElementById("main-container-body");
+    let chats = [];
 
     chatInput.focus();
 
@@ -10,7 +11,10 @@ window.onload = () => {
     });
 
     sendButton.addEventListener("click", () => {
-        console.log("Send button clicked");
+        if (chatInput.value !== "") {
+            chats.push(chatInput.value);
+        }
+        console.log(chats);
     });
 
     let mainContentDiv = document.createElement("div");
@@ -22,20 +26,25 @@ window.onload = () => {
         mainContentDiv.classList.add("clickable");
 
         mainContentDiv.addEventListener("click", () => {
-            Notification.requestPermission().then((permission) => {
-                if (permission === "granted") {
-                    let notification = new Notification(
-                        "Here's your notification!",
-                        {
-                            body: "This is how your notifications will be sent.",
-                        }
-                    );
-                } else {
-                    // // alert(
-                    //     "Notifications permission was denied. Please try again."
-                    // );
-                }
-            });
+            Notification.requestPermission()
+                .then((permission) => {
+                    if (permission === "granted") {
+                        let firstNotification = new Notification(
+                            "Here's your notification!",
+                            {
+                                body: "This is how your notifications will be sent.",
+                                tag: "First Notification",
+                            }
+                        );
+                    } else {
+                        alert(
+                            "Notifications permission was denied. Please try again."
+                        );
+                    }
+                })
+                .then(() => {
+                    location.reload();
+                });
         });
     }
 
